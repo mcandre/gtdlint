@@ -22,19 +22,21 @@ gtdlint is a shell wrapper around the traditional GNU [grep](http://www.gnu.org/
 # EXAMPLES
 
 ```
-$ bin/gtdlint examples/
+$ gtdlint examples/
 examples/hello.c:1:// TODO: Add copyright
-examples/hello.c:6:  // TODO: Add line ending
+examples/hello.c:6:  // TODO: Add proper line ending
+examples/hello.c:9:  putc(10, stdout); // hack
 examples/spanish/phrases.txt:1:PTE: Agregar más frases.
 
 $ cat examples/hello.c | bin/gtdlint
 stdin:1:// TODO: Add copyright
-stdin:6:  // TODO: Add line ending
+stdin:6:  // TODO: Add proper line ending
+stdin:9:  putc(10, stdout); // hack
 
-$ bin/gtdlint -i .c examples/
+$ gtdlint -i .c examples/
 examples/spanish/phrases.txt:1:PTE: Agregar más frases.
 
-$ bin/gtdlint -p pte examples/spanish/
+$ gtdlint -p pte examples/spanish/
 examples/spanish/phrases.txt:1:PTE: Agregar más frases.
 
 $ gtdlint -h
