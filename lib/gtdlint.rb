@@ -29,8 +29,13 @@ DEFAULT_IGNORES = %w(
 # Grep format, case insensitive
 DEFAULT_GTD_PATTERN = "\'todo\\|to do\\|to-do\\|hack\'"
 
+DEFAULT_LINES_BEFORE = 0
+DEFAULT_LINES_AFTER = 0
+
 DEFAULT_CONFIGURATION = {
-  "gtd_pattern" => DEFAULT_GTD_PATTERN
+  "gtd_pattern" => DEFAULT_GTD_PATTERN,
+  "lines_before" => DEFAULT_LINES_BEFORE,
+  "lines_after" => DEFAULT_LINES_AFTER
 }
 
 #
@@ -74,6 +79,8 @@ end
 
 def self.check_stdin(configuration = DEFAULT_CONFIGURATION)
   gtd_pattern = configuration["gtd_pattern"]
+  lines_before = configuration["lines_before"]
+  lines_after = configuration["lines_after"]
 
   contents = $stdin.read
 
@@ -83,7 +90,7 @@ def self.check_stdin(configuration = DEFAULT_CONFIGURATION)
 
   filename = t.path
 
-  output = `grep -ni #{gtd_pattern} \"#{filename}\"`
+  output = `grep -B #{lines_before} -A #{lines_after} -n -i #{gtd_pattern} \"#{filename}\"`
 
   lines = output.split("\n")
 
@@ -94,8 +101,10 @@ end
 
 def self.check(filename, configuration = DEFAULT_CONFIGURATION)
   gtd_pattern = configuration["gtd_pattern"]
+  lines_before = configuration["lines_before"]
+  lines_after = configuration["lines_after"]
 
-  output = `grep -ni #{gtd_pattern} \"#{filename}\"`
+  output = `grep -B #{lines_before} -A #{lines_after} -n -i #{gtd_pattern} \"#{filename}\"`
 
   lines = output.split("\n")
 
