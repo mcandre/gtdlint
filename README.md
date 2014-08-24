@@ -65,6 +65,12 @@ Usage: gtdlint [options] [<files>|-]
     -v, --version                    Print version info
 ```
 
+gtdlint can be combined with other programs. For example, check your most recent git commit for leftover TODOs:
+
+```
+$ git diff HEAD~1 | gtdlint
+```
+
 # REQUIREMENTS
 
 * [Ruby](https://www.ruby-lang.org/) 2+
