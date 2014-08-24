@@ -1,0 +1,6 @@
+*.gem
+Gemfile.lock
+.DS_Store
+Thumbs.db
+tmp/
+bin/
