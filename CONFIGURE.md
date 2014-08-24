@@ -42,7 +42,11 @@ Samples:
 `.gtdlintrc.yml` may contain a number of keys:
 
 * `gtd_pattern` is a shell-quoted string for a `grep` pattern.
+* `before_lines` is an optional integer for showing n lines before each matching line.
+* `after_lines` is an optional integer for showing n lines after each matching line.
 
 # Built-in defaults
 
-`gtd_pattern` defaults to `"\'todo\\|to do\\|to-do\\|hack\'"`.
+* `gtd_pattern`: `"\'todo\\|to do\\|to-do\\|hack\'"`.
+* `before_lines`: `0`
+* `after_lines`: `0`

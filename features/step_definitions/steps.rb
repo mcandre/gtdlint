@@ -4,6 +4,7 @@ Given(/^the program has finished$/) do
   @cucumber_stdin = `cat examples/hello.c | gtdlint`
   @cucumber_ignore_c = `gtdlint -i .c examples/`
   @cucumber_custom_pattern = `gtdlint -p pte examples/spanish/`
+  @cucumber_before_after = `gtdlint -A 2 -B 2 examples/hello.c`
 end
 
 Then(/^the output is correct for each test$/) do
@@ -22,4 +23,8 @@ Then(/^the output is correct for each test$/) do
   cucumber_custom_pattern_lines = @cucumber_custom_pattern.split("\n")
   expect(cucumber_custom_pattern_lines.length).to eq(1)
   expect(cucumber_custom_pattern_lines[0]).to match(%r(^examples/spanish/phrases.txt\:[0-9]+\:.+$))
+
+  cucumber_before_after_lines = @cucumber_before_after.split("\n")
+  expect(cucumber_before_after_lines.length).to eq(17)
+  expect(cucumber_before_after_lines[2]).to match(%r(^examples/hello.c\:[0-9]+(\:|-).*$))
 end

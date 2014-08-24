@@ -58,7 +58,9 @@ examples/spanish/phrases.txt:1:PTE: Agregar más frases.
 $ gtdlint -h
 Usage: gtdlint [options] [<files>|-]
     -i, --ignore pattern             Ignore file names matching Ruby regex pattern
-    -w, --max-width=                 Maximum column width, either an integer or "unlimited". Default: 80
+    -p, --gtd-pattern pattern        Custom GTD pattern
+    -B, --lines-before n             Also show n lines before matching line
+    -A, --lines-after n              Also show n lines after matching line
     -h, --help                       Print usage info
     -v, --version                    Print version info
 ```
