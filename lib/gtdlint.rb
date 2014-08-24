@@ -45,12 +45,16 @@ class GTDThing
   attr_accessor :filename, :line_number, :line
 
   def self.parse(filename, grep_line)
-    match = grep_line.match(/^(.+)\:(.+)$/)
+    if grep_line.match(/^--$/) then
+      grep_line
+    else
+      match = grep_line.match(/^([0-9]+)(\:|-)(.*)$/)
 
-    line_number = match[1]
-    line = match[2]
+      line_number = match[1]
+      line = match[3]
 
-    GTDThing.new(filename, line_number, line)
+      GTDThing.new(filename, line_number, line)
+    end
   end
 
   def initialize(filename, line_number, line)
