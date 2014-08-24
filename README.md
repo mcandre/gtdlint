@@ -12,7 +12,19 @@ https://rubygems.org/gems/gtdlint
 
 Gtdlint is a command line program for finding TODO tasks in a project, such as `// TODO` code comments. By default, gtdlint is case-insensitve, and looks for:
 
-* `todo`/`to do`/`to-do`/`hack`
+* `todo`
+* `to do`
+* `to-do`
+* `TODO`
+* `TO DO`
+* `TO-DO`
+* `ToDo`
+* `To Do`
+* `To-Do`
+* `hack`
+* `Hack`
+* `HACK`
+* ...
 
 gtdlint can be customized with a `-p` command line flag and/or a `.gtdlintrc.yml` configuration file, for example to look for `pte` instead, in Spanish projects.
 
