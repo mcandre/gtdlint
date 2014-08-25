@@ -33,9 +33,9 @@ DEFAULT_LINES_BEFORE = 0
 DEFAULT_LINES_AFTER = 0
 
 DEFAULT_CONFIGURATION = {
-  "gtd_pattern" => DEFAULT_GTD_PATTERN,
-  "lines_before" => DEFAULT_LINES_BEFORE,
-  "lines_after" => DEFAULT_LINES_AFTER
+  'gtd_pattern' => DEFAULT_GTD_PATTERN,
+  'lines_before' => DEFAULT_LINES_BEFORE,
+  'lines_after' => DEFAULT_LINES_AFTER
 }
 
 #
@@ -45,7 +45,7 @@ class GTDThing
   attr_accessor :filename, :line_number, :line
 
   def self.parse(filename, grep_line)
-    if grep_line.match(/^--$/) then
+    if grep_line.match(/^--$/)
       grep_line
     else
       match = grep_line.match(/^([0-9]+)(\:|-)(.*)$/)
@@ -71,7 +71,7 @@ end
 def self.recursive_list(directory, ignores = DEFAULT_IGNORES)
   Find.find(directory).reject do |f|
     File.directory?(f) ||
-    ignores.any? { |ignore| f =~ %r(#{ignore}) } ||
+    ignores.any? { |ignore| f =~ /#{ignore}/ } ||
 
     begin
       File.binary?(f)
@@ -82,9 +82,9 @@ def self.recursive_list(directory, ignores = DEFAULT_IGNORES)
 end
 
 def self.check_stdin(configuration = DEFAULT_CONFIGURATION)
-  gtd_pattern = configuration["gtd_pattern"]
-  lines_before = configuration["lines_before"]
-  lines_after = configuration["lines_after"]
+  gtd_pattern = configuration['gtd_pattern']
+  lines_before = configuration['lines_before']
+  lines_after = configuration['lines_after']
 
   contents = $stdin.read
 
@@ -94,7 +94,13 @@ def self.check_stdin(configuration = DEFAULT_CONFIGURATION)
 
   filename = t.path
 
-  output = `grep -B #{lines_before} -A #{lines_after} -n -i #{gtd_pattern} \"#{filename}\"`
+  output = `grep \
+-B #{lines_before} \
+-A #{lines_after} \
+-n \
+-i #{gtd_pattern} \
+\"#{filename}\"
+`
 
   lines = output.split("\n")
 
@@ -104,11 +110,17 @@ def self.check_stdin(configuration = DEFAULT_CONFIGURATION)
 end
 
 def self.check(filename, configuration = DEFAULT_CONFIGURATION)
-  gtd_pattern = configuration["gtd_pattern"]
-  lines_before = configuration["lines_before"]
-  lines_after = configuration["lines_after"]
+  gtd_pattern = configuration['gtd_pattern']
+  lines_before = configuration['lines_before']
+  lines_after = configuration['lines_after']
 
-  output = `grep -B #{lines_before} -A #{lines_after} -n -i #{gtd_pattern} \"#{filename}\"`
+  output = `grep \
+-B #{lines_before} \
+-A #{lines_after} \
+-n \
+-i #{gtd_pattern} \
+\"#{filename}\"
+`
 
   lines = output.split("\n")
 

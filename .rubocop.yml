@@ -1,0 +1,5 @@
+MethodLength:
+  Max: 60
+Style/FileName:
+  Exclude:
+    - 'Guardfile*'
