@@ -1,0 +1,161 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'find'
+require 'optparse'
+require 'yaml'
+require 'gtdlint'
+
+IGNORE_FILENAME = '.gtdlintignore'
+CONFIGURATION_FILENAME = '.gtdlintrc.yml'
+
+def main
+  ignores = DEFAULT_IGNORES
+
+  filenames = ['-']
+
+  configuration_flags = {}
+
+  option = OptionParser.new do |option|
+    option.banner = "Usage: gtdlint [options] [<files>|-]"
+
+    option.on('-i', '--ignore pattern', 'Ignore file names matching Ruby regex pattern') do |pattern|
+      ignores << pattern
+    end
+
+    option.on('-p', '--gtd-pattern pattern', 'Custom GTD pattern') do |pattern|
+      configuration_flags["gtd_pattern"] = pattern
+    end
+
+    option.on('-B', '--lines-before n', 'Also show n lines before matching line') do |n|
+      configuration_flags["lines_before"] = n.to_i
+    end
+
+    option.on('-A', '--lines-after n', 'Also show n lines after matching line') do |n|
+      configuration_flags["lines_after"] = n.to_i
+    end
+
+    option.on('-h', '--help', 'Print usage info') do
+      puts option
+      exit
+    end
+
+    option.on('-v', '--version', 'Print version info') do
+      puts "gtdlint #{GTDLint::VERSION}"
+      exit
+    end
+  end
+
+  option.parse!
+
+  filenames = ARGV unless ARGV.empty?
+
+  if filenames.empty? || filenames == ['-'] then
+    configuration_dotfile = DEFAULT_CONFIGURATION
+
+    pwd = Dir.pwd
+
+    dir = pwd
+
+    parent_of_home = File.expand_path("..", ENV["HOME"])
+
+    while dir != parent_of_home
+      ignore_file = dir + File::SEPARATOR + IGNORE_FILENAME
+
+      if File.exist?(ignore_file) then
+        ignores.concat(open(ignore_file).read.split("\n"))
+      end
+
+      dir = File.expand_path("..", dir)
+    end
+
+    if ignores.none? { |ignore| pwd =~ %r(#{ignore}) } then
+      dir = Dir.pwd
+
+      parent_of_home = File.expand_path("..", ENV["HOME"])
+
+      while dir != parent_of_home
+        config_file = dir + File::SEPARATOR + CONFIGURATION_FILENAME
+
+        if File.exist?(config_file) then
+          configuration_dotfile = DEFAULT_CONFIGURATION.merge(YAML.load_file(config_file))
+          break
+        else
+          dir = File.expand_path("..", dir)
+        end
+      end
+
+      # Command line flags override dotfile settings
+      configuration = configuration_dotfile.merge(configuration_flags)
+
+      check_stdin(configuration)
+    end
+  else
+    recursive_filenames = []
+
+    filenames.each do |f|
+      if File.directory? f
+        recursive_filenames = recursive_filenames.concat(recursive_list(f, ignores))
+      else
+        recursive_filenames << f
+      end
+    end
+
+    configuration_dotfile = DEFAULT_CONFIGURATION
+
+    recursive_filenames.each do |f|
+      dir = File.expand_path("..", f)
+
+      parent_of_home = File.expand_path("..", ENV["HOME"])
+
+      while dir != parent_of_home
+        ignore_file = dir + File::SEPARATOR + IGNORE_FILENAME
+
+        if File.exist?(ignore_file) then
+          ignores.concat(open(ignore_file).read.split("\n"))
+        end
+
+        dir = File.expand_path("..", dir)
+      end
+
+      if ignores.none? { |ignore| f =~ %r(#{ignore}) } then
+        dir = File.expand_path("..", f)
+
+        parent_of_home = File.expand_path("..", ENV["HOME"])
+
+        while dir != parent_of_home
+          config_file = dir + File::SEPARATOR + CONFIGURATION_FILENAME
+
+          if File.exist?(config_file) then
+            configuration_dotfile = DEFAULT_CONFIGURATION.merge(YAML.load_file(config_file))
+            break
+          else
+            dir = File.expand_path("..", dir)
+          end
+        end
+
+        # Hack to Reset configuration when changing directories
+        configuration_dotfile = DEFAULT_CONFIGURATION unless File.exist?(dir + File::SEPARATOR + CONFIGURATION_FILENAME)
+
+        # Command line flags override dotfile settings
+        configuration = configuration_dotfile.merge(configuration_flags)
+
+        check(f, configuration)
+      end
+    end
+  end
+end
+
+begin
+  main
+# User may quit before completion.
+rescue Interrupt
+  nil
+# Bad regex
+rescue RegexpError => e
+  puts e
+# This program may be piped to another program (e.g. `less`),
+# which is quit before this program completes.
+rescue Errno::EPIPE, Errno::EMFILE
+  nil
+end

@@ -25,6 +25,6 @@ Then(/^the output is correct for each test$/) do
   expect(cucumber_custom_pattern_lines[0]).to match(%r(^examples/spanish/phrases.txt\:[0-9]+\:.+$))
 
   cucumber_before_after_lines = @cucumber_before_after.split("\n")
-  expect(cucumber_before_after_lines.length).to eq(17)
+  expect(cucumber_before_after_lines.length).to be >= 11
   expect(cucumber_before_after_lines[2]).to match(%r(^examples/hello.c\:[0-9]+(\:|-).*$))
 end
