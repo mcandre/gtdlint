@@ -98,7 +98,8 @@ def self.check_stdin(configuration = DEFAULT_CONFIGURATION)
 -B #{lines_before} \
 -A #{lines_after} \
 -n \
--i #{gtd_pattern} \
+-i \
+-w #{gtd_pattern} \
 \"#{filename}\"
 `
 
@@ -118,7 +119,8 @@ def self.check(filename, configuration = DEFAULT_CONFIGURATION)
 -B #{lines_before} \
 -A #{lines_after} \
 -n \
--i #{gtd_pattern} \
+-i \
+-w #{gtd_pattern} \
 \"#{filename}\"
 `
 
