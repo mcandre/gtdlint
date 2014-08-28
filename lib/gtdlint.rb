@@ -7,27 +7,27 @@ $stdout.sync = true
 require 'version'
 
 DEFAULT_IGNORES = %w(
-  .hg/
-  .svn/
-  .git/
-  .git
-  .gtdlintignore
-  .gtdlintrc.yml
+  \.hg/
+  \.svn/
+  \.git/
+  \.git
+  \.gtdlintignore
+  \.gtdlintrc\.yml
   node_modules/
-  .vagrant/
+  \.vagrant/
   Gemfile.lock
-  .exe
-  .bin
-  .png
-  .jpg
-  .jpeg
-  .svg
-  .min.js
-  -min.js
+  \.exe
+  \.bin
+  \.png
+  \.jpg
+  \.jpeg
+  \.svg
+  \.min.js
+  -min\.js
 )
 
 # Grep format, case insensitive
-DEFAULT_GTD_PATTERN = "\'todo\\|to do\\|to-do\\|hack\'"
+DEFAULT_GTD_PATTERN = "\'todo\\|to do\\|to-do\\|pending\\|hack\'"
 
 DEFAULT_LINES_BEFORE = 0
 DEFAULT_LINES_AFTER = 0

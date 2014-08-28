@@ -13,18 +13,8 @@ https://rubygems.org/gems/gtdlint
 Gtdlint is a command line program for finding TODO tasks in a project, such as `// TODO` code comments. By default, gtdlint is case-insensitve, and looks for:
 
 * `todo`
-* `to do`
-* `to-do`
-* `TODO`
-* `TO DO`
-* `TO-DO`
-* `ToDo`
-* `To Do`
-* `To-Do`
+* `pending`
 * `hack`
-* `Hack`
-* `HACK`
-* ...
 
 gtdlint can be customized with a `-p` command line flag and/or a `.gtdlintrc.yml` configuration file. For example, gtdlint can be configured to look for `pte`/`hack` in Spanish projects.
 
@@ -43,14 +33,16 @@ examples/hello.c:1:// TODO: Add copyright
 examples/hello.c:6:  // TODO: Add proper line ending
 examples/hello.c:9:  putc(10, stdout); // hack
 examples/spanish/phrases.txt:1:PTE: Agregar más frases.
+examples/spec/int_spec.rb:3:    pending('mathematical revolution')
 
 $ cat examples/hello.c | bin/gtdlint
 stdin:1:// TODO: Add copyright
 stdin:6:  // TODO: Add proper line ending
 stdin:9:  putc(10, stdout); // hack
 
-$ gtdlint -i .c examples/
+$ gtdlint -i '\.c' examples/
 examples/spanish/phrases.txt:1:PTE: Agregar más frases.
+examples/spec/int_spec.rb:3:    pending('mathematical revolution')
 
 $ gtdlint -p pte examples/spanish/
 examples/spanish/phrases.txt:1:PTE: Agregar más frases.
