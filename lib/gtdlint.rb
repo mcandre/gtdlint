@@ -23,6 +23,7 @@ DEFAULT_IGNORES = %w(
   \.war
   \.xpi
   \.dmg
+  \.pkg
   \.app
   \.xcodeproj/
   \.lproj/
