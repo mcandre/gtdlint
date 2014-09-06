@@ -17,12 +17,16 @@ DEFAULT_IGNORES = %w(
   Gemfile.lock
   \.exe
   \.bin
+  \.class
+  \.cmo
+  \.cmi
   \.png
   \.gif
   \.jpg
   \.jpeg
   \.tiff
   \.svg
+  \.dot
   \.wav
   \.min.js
   -min\.js
