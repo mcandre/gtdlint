@@ -10,7 +10,6 @@ DEFAULT_IGNORES = %w(
   \.hg/
   \.svn/
   \.git/
-  \.git
   \.gtdlintignore
   \.gtdlintrc\.yml
   node_modules/
@@ -19,8 +18,10 @@ DEFAULT_IGNORES = %w(
   \.exe
   \.bin
   \.png
+  \.gif
   \.jpg
   \.jpeg
+  \.tiff
   \.svg
   \.min.js
   -min\.js
