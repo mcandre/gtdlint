@@ -18,6 +18,7 @@ DEFAULT_IGNORES = %w(
   \.exe
   \.bin
   \.class
+  \.jad
   \.cmo
   \.cmi
   \.png
