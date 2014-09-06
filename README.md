@@ -29,6 +29,7 @@ gtdlint is a shell wrapper around the traditional GNU [grep](http://www.gnu.org/
 
 ```
 $ gtdlint examples/
+examples/.gitignore:1:# TODO: gitignore bin/
 examples/hello.c:1:// TODO: Add copyright
 examples/hello.c:6:  // TODO: Add proper line ending
 examples/hello.c:9:  putc(10, stdout); // hack
@@ -40,7 +41,7 @@ stdin:1:// TODO: Add copyright
 stdin:6:  // TODO: Add proper line ending
 stdin:9:  putc(10, stdout); // hack
 
-$ gtdlint -i '\.c' examples/
+$ gtdlint -i '\.gitignore' '\.c' examples/
 examples/spanish/phrases.txt:1:PTE: Agregar más frases.
 examples/spec/int_spec.rb:3:    pending('mathematical revolution')
 
