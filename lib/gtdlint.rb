@@ -13,6 +13,9 @@ DEFAULT_IGNORES = %w(
   \.gtdlintignore
   \.gtdlintrc\.yml
   node_modules/
+  bower_components/
+  target/
+  dist/
   \.vagrant/
   Gemfile.lock
   \.exe
