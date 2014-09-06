@@ -20,6 +20,8 @@ DEFAULT_IGNORES = %w(
   Gemfile.lock
   \.exe
   \.bin
+  \.apk
+  \.ap_
   \.class
   \.zip
   \.jar
