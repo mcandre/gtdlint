@@ -18,6 +18,11 @@ DEFAULT_IGNORES = %w(
   \.exe
   \.bin
   \.class
+  \.app
+  \.xcodeproj/
+  \.lproj/
+  \.xcassets/
+  \.dSYM/
   \.jad
   \.cmo
   \.cmi
