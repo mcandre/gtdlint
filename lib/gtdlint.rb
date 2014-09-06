@@ -22,6 +22,7 @@ DEFAULT_IGNORES = %w(
   \.bin
   \.apk
   \.ap_
+  res/
   \.class
   \.zip
   \.jar
