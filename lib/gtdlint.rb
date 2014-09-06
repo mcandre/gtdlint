@@ -48,6 +48,7 @@ DEFAULT_IGNORES = %w(
   \.svg
   \.dot
   \.wav
+  \.mp3
   \.min.js
   -min\.js
 )
