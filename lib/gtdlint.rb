@@ -18,6 +18,11 @@ DEFAULT_IGNORES = %w(
   \.exe
   \.bin
   \.class
+  \.zip
+  \.jar
+  \.war
+  \.xpi
+  \.dmg
   \.app
   \.xcodeproj/
   \.lproj/
@@ -31,6 +36,7 @@ DEFAULT_IGNORES = %w(
   \.jpg
   \.jpeg
   \.tiff
+  \.ico
   \.svg
   \.dot
   \.wav
