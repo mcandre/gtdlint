@@ -20,8 +20,8 @@ gtdlint can be customized with a `-p` command line flag and/or a `.gtdlintrc.yml
 
 gtdlint is a shell wrapper around the traditional GNU [grep](http://www.gnu.org/software/grep/) backend, presenting a frontend similar to modern linters like [Reek](https://github.com/troessner/reek/wiki) and [JSHint](http://jshint.com/).
 
-* Recursive file search by default
-* Optional ignore patterns
+* Recursive file scanning, like `jshint .`
+* Optional ignore patterns, like `.gitignore`
 * Configuration via per-project and per-user [dotfiles](https://github.com/mcandre/gtdlint/blob/master/CONFIGURE.md#dotfiles)
 * Install via a standard programming language package manager
 
@@ -41,7 +41,7 @@ stdin:1:// TODO: Add copyright
 stdin:6:  // TODO: Add proper line ending
 stdin:9:  putc(10, stdout); // hack
 
-$ gtdlint -i '\.gitignore' '\.c' examples/
+$ gtdlint -i .gitignore '*.c' examples/
 examples/spanish/phrases.txt:1:PTE: Agregar más frases.
 examples/spec/int_spec.rb:3:    pending('mathematical revolution')
 
@@ -50,7 +50,7 @@ examples/spanish/phrases.txt:1:PTE: Agregar más frases.
 
 $ gtdlint -h
 Usage: gtdlint [options] [<files>|-]
-    -i, --ignore pattern             Ignore file names matching Ruby regex pattern
+    -i, --ignore pattern             Ignore file pattern (fnmatch)
     -p, --gtd-pattern pattern        Custom GTD pattern
     -B, --lines-before n             Also show n lines before matching line
     -A, --lines-after n              Also show n lines after matching line

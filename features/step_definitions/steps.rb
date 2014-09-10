@@ -2,7 +2,7 @@ Given(/^the program has finished$/) do
   # Test files are generated using iconv.
   @cucumber = `gtdlint examples/`
   @cucumber_stdin = `cat examples/hello.c | gtdlint`
-  @cucumber_ignore_c = `gtdlint -i '\\.gitignore' -i '\\.c' examples/`
+  @cucumber_ignore_c = `gtdlint -i .gitignore -i '*.c' examples/`
   @cucumber_custom_pattern = `gtdlint -p pte examples/spanish/`
   @cucumber_before_after = `gtdlint -A 2 -B 2 examples/hello.c`
 end

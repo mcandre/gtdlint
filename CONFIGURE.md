@@ -15,7 +15,7 @@ Run `gtdlint -h` or `gtdlint --help` for a full list, or refer to the source cod
 ```
 $ bin/gtdlint -h
 Usage: gtdlint [options] [<files>|-]
-    -i, --ignore pattern             Ignore file names matching Ruby regex pattern
+    -i, --ignore pattern             Ignore file pattern (fnmatch)
     -p, --gtd-pattern pattern        Custom GTD pattern
     -h, --help                       Print usage info
     -v, --version                    Print version info

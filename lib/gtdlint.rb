@@ -2,55 +2,53 @@ require 'rubygems'
 require 'ptools'
 require 'tempfile'
 
-$stdout.sync = true
-
 require 'version'
 
 DEFAULT_IGNORES = %w(
-  \.hg/
-  \.svn/
-  \.git/
-  \.gtdlintignore
-  \.gtdlintrc\.yml
+  tmp/
+  .hg/
+  .svn/
+  .git/
+  .gtdlintignore
+  .gtdlintrc.yml
   node_modules/
   bower_components/
   target/
   dist/
-  \.vagrant/
+  .vagrant/
   Gemfile.lock
-  \.exe
-  \.bin
-  \.apk
-  \.ap_
+  *.exe
+  *.bin
+  *.apk
+  *.ap_
   res/
-  \.class
-  \.zip
-  \.jar
-  \.war
-  \.xpi
-  \.dmg
-  \.pkg
-  \.app
-  \.xcodeproj/
-  \.lproj/
-  \.xcassets/
-  \.pmdoc/
-  \.dSYM/
-  \.jad
-  \.cmo
-  \.cmi
-  \.png
-  \.gif
-  \.jpg
-  \.jpeg
-  \.tiff
-  \.ico
-  \.svg
-  \.dot
-  \.wav
-  \.mp3
-  \.min.js
-  -min\.js
+  *.class
+  *.zip
+  *.jar
+  *.war
+  *.xpi
+  *.dmg
+  *.pkg
+  *.app
+  *.xcodeproj/
+  *.lproj/
+  *.xcassets/
+  *.pmdoc/
+  *.dSYM/
+  *.jad
+  *.cmo
+  *.cmi
+  *.png
+  *.gif
+  *.jpg
+  *.jpeg
+  *.tiff
+  *.ico
+  *.svg
+  *.dot
+  *.wav
+  *.mp3
+  *[.-]min.*
 )
 
 # Grep format, case insensitive
@@ -95,27 +93,21 @@ class GTDThing
   end
 end
 
-def self.recursive_list(directory, ignores = DEFAULT_IGNORES)
-  Find.find(directory).reject do |f|
-    File.directory?(f) ||
-    ignores.any? { |ignore| f =~ /#{ignore}/ } ||
-
-    begin
-      File.binary?(f)
-    rescue Errno::ENOENT
-      true
+def self.check_stdin(configuration = nil)
+  configuration =
+    if configuration.nil?
+      DEFAULT_CONFIGURATION
+    else
+      configuration
     end
-  end
-end
 
-def self.check_stdin(configuration = DEFAULT_CONFIGURATION)
   gtd_pattern = configuration['gtd_pattern']
   lines_before = configuration['lines_before']
   lines_after = configuration['lines_after']
 
   contents = $stdin.read
 
-  t = Tempfile.new('aspelllint')
+  t = Tempfile.new('gtdlint')
   t.write(contents)
   t.close
 
@@ -137,7 +129,14 @@ def self.check_stdin(configuration = DEFAULT_CONFIGURATION)
   gtd_things.each { |m| puts m }
 end
 
-def self.check(filename, configuration = DEFAULT_CONFIGURATION)
+def self.check(filename, configuration = nil)
+  configuration =
+    if configuration.nil?
+      DEFAULT_CONFIGURATION
+    else
+      configuration
+    end
+
   gtd_pattern = configuration['gtd_pattern']
   lines_before = configuration['lines_before']
   lines_after = configuration['lines_after']
