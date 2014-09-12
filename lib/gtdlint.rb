@@ -4,23 +4,23 @@ require 'tempfile'
 require 'version'
 
 DEFAULT_IGNORES = %w(
-  tmp/
-  .hg/
-  .svn/
-  .git/
+  tmp
+  .hg
+  .svn
+  .git
   .gtdlintignore
   .gtdlintrc.yml
-  node_modules/
-  bower_components/
-  target/
-  dist/
-  .vagrant/
+  node_modules
+  bower_components
+  target
+  dist
+  .vagrant
   Gemfile.lock
   *.exe
   *.bin
   *.apk
   *.ap_
-  res/
+  res
   *.class
   *.zip
   *.jar
@@ -29,11 +29,11 @@ DEFAULT_IGNORES = %w(
   *.dmg
   *.pkg
   *.app
-  *.xcodeproj/
-  *.lproj/
-  *.xcassets/
-  *.pmdoc/
-  *.dSYM/
+  *.xcodeproj
+  *.lproj
+  *.xcassets
+  *.pmdoc
+  *.dSYM
   *.jad
   *.cmo
   *.cmi
