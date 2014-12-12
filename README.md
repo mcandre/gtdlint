@@ -66,7 +66,7 @@ $ git diff HEAD~1 | gtdlint
 
 # REQUIREMENTS
 
-* [Ruby](https://www.ruby-lang.org/) 2+
+* [Ruby](https://www.ruby-lang.org/) 2.0+
 * [grep](http://www.gnu.org/software/grep/) (often built-in, or provided by [git](http://git-scm.com/))
 
 E.g., Windows users can `chocolatey install git`.
