@@ -1,29 +1,6 @@
 # gtdlint - search for TO-DO items to complete in large projects
 
-# HOMEPAGE
-
-https://github.com/mcandre/gtdlint
-
-# RUBYGEMS
-
-https://rubygems.org/gems/gtdlint
-
-# ABOUT
-
-Gtdlint is a command line program for finding TODO tasks in a project, such as `// TODO` code comments. By default, gtdlint is case-insensitve, and looks for:
-
-* `todo`
-* `pending`
-* `hack`
-
-gtdlint can be customized with a `-p` command line flag and/or a `.gtdlintrc.yml` configuration file. For example, gtdlint can be configured to look for `pte`/`hack` in Spanish projects.
-
-gtdlint is a shell wrapper around the traditional GNU [grep](http://www.gnu.org/software/grep/) backend, presenting a frontend similar to modern linters like [Reek](https://github.com/troessner/reek/wiki) and [JSHint](http://jshint.com/).
-
-* Recursive file scanning, like `jshint .`
-* Optional ignore patterns, like `.gitignore`
-* Configuration via per-project and per-user [dotfiles](https://github.com/mcandre/gtdlint/blob/master/CONFIGURE.md#dotfiles)
-* Install via a standard programming language package manager
+`gtdlint` searches your projects for code comments indicating TODOs, FIXMEs, and other changes that need to be made.
 
 # EXAMPLES
 
@@ -63,6 +40,31 @@ gtdlint can be combined with other programs. For example, check your most recent
 ```
 $ git diff HEAD~1 | gtdlint
 ```
+
+# HOMEPAGE
+
+https://github.com/mcandre/gtdlint
+
+# RUBYGEMS
+
+https://rubygems.org/gems/gtdlint
+
+# ABOUT
+
+Gtdlint is a command line program for finding TODO tasks in a project, such as `// TODO` code comments. By default, gtdlint is case-insensitve, and looks for:
+
+* `todo`
+* `pending`
+* `hack`
+
+gtdlint can be customized with a `-p` command line flag and/or a `.gtdlintrc.yml` configuration file. For example, gtdlint can be configured to look for `pte`/`hack` in Spanish projects.
+
+gtdlint is a shell wrapper around the traditional GNU [grep](http://www.gnu.org/software/grep/) backend, presenting a frontend similar to modern linters like [Reek](https://github.com/troessner/reek/wiki) and [JSHint](http://jshint.com/).
+
+* Recursive file scanning, like `jshint .`
+* Optional ignore patterns, like `.gitignore`
+* Configuration via per-project and per-user [dotfiles](https://github.com/mcandre/gtdlint/blob/master/CONFIGURE.md#dotfiles)
+* Install via a standard programming language package manager
 
 # REQUIREMENTS
 
