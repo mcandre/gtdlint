@@ -47,6 +47,6 @@ Samples:
 
 # Built-in defaults
 
-* `gtd_pattern`: `"\'todo\\|to do\\|to-do\\|pending\\|hack\'"`.
+* `gtd_pattern`: `"\'todo\\|to do\\|to-do\\|pending\\|hack\\|fixme\'"`.
 * `before_lines`: `0`
 * `after_lines`: `0`

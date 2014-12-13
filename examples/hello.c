@@ -8,5 +8,5 @@ int main() {
 
   putc(10, stdout); // hack
 
-  return 0;
+  return 1; // FIXME: Change this to return success
 }

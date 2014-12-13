@@ -51,7 +51,7 @@ DEFAULT_IGNORES = %w(
 )
 
 # Grep format, case insensitive
-DEFAULT_GTD_PATTERN = "\'todo\\|to do\\|to-do\\|pending\\|hack\'"
+DEFAULT_GTD_PATTERN = "\'todo\\|to do\\|to-do\\|pending\\|hack\\|fixme\'"
 
 DEFAULT_LINES_BEFORE = 0
 DEFAULT_LINES_AFTER = 0

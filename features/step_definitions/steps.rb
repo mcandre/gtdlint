@@ -9,11 +9,11 @@ end
 
 Then(/^the output is correct for each test$/) do
   cucumber_lines = @cucumber.split("\n")
-  expect(cucumber_lines.length).to eq(6)
+  expect(cucumber_lines.length).to eq(7)
   expect(cucumber_lines[0]).to match(%r(^examples/.gitignore\:[0-9]+\:.+$))
 
   cucumber_stdin_lines = @cucumber_stdin.split("\n")
-  expect(cucumber_stdin_lines.length).to eq(3)
+  expect(cucumber_stdin_lines.length).to eq(4)
   expect(cucumber_stdin_lines[0]).to match(%r(^stdin:[0-9]+\:.+$))
 
   cucumber_ignore_c_lines = @cucumber_ignore_c.split("\n")
