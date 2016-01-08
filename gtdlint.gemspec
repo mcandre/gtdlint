@@ -16,7 +16,7 @@ Gem::Specification.new { |s|
   s.files = Dir['lib/*.rb'] + Dir['*.md']
   s.homepage = 'https://github.com/mcandre/gtdlint'
 
-  s.required_ruby_version = '>= 2.0'
+  s.required_ruby_version = '>= 2.3'
 
   s.add_dependency 'ptools', '~> 1.2'
   s.add_dependency 'dotsmack', '~> 0.3'
