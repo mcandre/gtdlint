@@ -6,6 +6,28 @@ require 'optparse'
 require 'dotsmack'
 require 'yaml'
 require 'gtdlint'
+require 'json'
+
+STAT_HEADER = <<-eos
+{
+  "statVersion": "0.4.0",
+  "process": {
+    "name": "Search for TO-DO items to complete in large projects",
+    "version": "#{GTDLint::VERSION}",
+    "description": " searches your projects for code comments indicating TODOs, FIXMEs, and other changes that need to be made",
+    "maintainer": "Andrew Pennebaker",
+    "email": "andrew.pennebaker@gmail.com",
+    "website": "https://github.com/mcandre/gtdlint",
+    "repeatability": "Associative"
+  },
+  "findings": [
+eos
+
+STAT_FOOTER = <<-eos
+
+  ]
+}
+eos
 
 def main
   ignores = DEFAULT_IGNORES
@@ -29,6 +51,12 @@ def main
 
     option.on('-A', '--lines-after=n', 'Also show n lines after matching line') do |n|
       configuration_flags["lines_after"] = n.to_i
+    end
+
+    option.on('-s', '--stat', 'Output in STAT') do
+      configuration_flags["is_stat"] = true
+      configuration_flags.delete("lines_before")
+      configuration_flags.delete("lines_after")
     end
 
     option.on('-h', '--help', 'Print usage info') do
@@ -56,7 +84,7 @@ def main
     additional_ignores = ignores,
     dotconfig = '.gtdlintrc.yml'
   )
-
+  finding_count = 0
   dotsmack.enumerate(filenames).each do |filename, config|
     config =
       if config.nil?
@@ -66,11 +94,28 @@ def main
       end
 
     if filename == '-'
-      check_stdin(config)
+      check_stdin(config) {|finding|
+        finding_count = output(finding, finding_count, configuration_flags["is_stat"])
+      }
     else
-      check(filename, config)
+      check(filename, config) {|finding|
+        finding_count = output(finding, finding_count, configuration_flags["is_stat"])
+      }
     end
   end
+
+  if configuration_flags["is_stat"] && finding_count > 0
+    puts STAT_FOOTER
+  end
+end
+
+def output(finding, finding_count, is_stat)
+  if is_stat
+    puts STAT_HEADER if finding_count == 0
+    puts ',' if finding_count > 0
+    print JSON.pretty_generate(finding).lines.map { |line| '    ' + line }.join
+  end
+  return finding_count + 1
 end
 
 begin
