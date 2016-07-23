@@ -90,6 +90,22 @@ class GTDThing
   def to_s
     "#{filename}:#{line_number}:#{line}"
   end
+
+  def to_finding
+    {
+        :failure => true,
+        :rule => "Pattern found",
+        :description => "Observed line: #{line}",
+        :categories => [
+            "Bug Risk"
+        ],
+        :location => {
+            :path => "#{filename}",
+            :beginLine => "#{line_number}",
+        },
+    }
+  end
+
 end
 
 def self.check_stdin(configuration = nil)
@@ -103,6 +119,7 @@ def self.check_stdin(configuration = nil)
   gtd_pattern = configuration['gtd_pattern']
   lines_before = configuration['lines_before']
   lines_after = configuration['lines_after']
+  is_stat = configuration['is_stat']
 
   contents = $stdin.read
 
@@ -125,7 +142,13 @@ def self.check_stdin(configuration = nil)
 
   gtd_things = lines.map { |line| GTDThing.parse('stdin', line) }
 
-  gtd_things.each { |m| puts m }
+  if is_stat
+    gtd_things.each { |finding|
+      yield finding.to_finding
+    }
+  else
+    gtd_things.each { |m| puts m }
+  end
 end
 
 def self.check(filename, configuration = nil)
@@ -139,6 +162,7 @@ def self.check(filename, configuration = nil)
   gtd_pattern = configuration['gtd_pattern']
   lines_before = configuration['lines_before']
   lines_after = configuration['lines_after']
+  is_stat = configuration['is_stat']
 
   output = `grep \
 -B #{lines_before} \
@@ -153,5 +177,11 @@ def self.check(filename, configuration = nil)
 
   gtd_things = lines.map { |line| GTDThing.parse(filename, line) }
 
-  gtd_things.each { |m| puts m }
+  if is_stat
+    gtd_things.each { |finding|
+      yield finding.to_finding
+    }
+  else
+    gtd_things.each { |m| puts m }
+  end
 end
