@@ -14,7 +14,7 @@ STAT_HEADER = <<-eos
   "process": {
     "name": "Search for TO-DO items to complete in large projects",
     "version": "#{GTDLint::VERSION}",
-    "description": " searches your projects for code comments indicating TODOs, FIXMEs, and other changes that need to be made",
+    "description": "Searches your projects for code comments indicating TODOs, FIXMEs, and other changes that need to be made",
     "maintainer": "Andrew Pennebaker",
     "email": "andrew.pennebaker@gmail.com",
     "website": "https://github.com/mcandre/gtdlint",
