@@ -45,18 +45,16 @@ def main
       configuration_flags["gtd_pattern"] = pattern
     end
 
-    option.on('-B', '--lines-before=n', 'Also show n lines before matching line') do |n|
+    option.on('-B', '--lines-before=n', 'Also show n lines before matching line, incompatible with STAT output') do |n|
       configuration_flags["lines_before"] = n.to_i
     end
 
-    option.on('-A', '--lines-after=n', 'Also show n lines after matching line') do |n|
+    option.on('-A', '--lines-after=n', 'Also show n lines after matching line, incompatible with STAT output') do |n|
       configuration_flags["lines_after"] = n.to_i
     end
 
     option.on('-s', '--stat', 'Output in STAT') do
       configuration_flags["is_stat"] = true
-      configuration_flags.delete("lines_before")
-      configuration_flags.delete("lines_after")
     end
 
     option.on('-h', '--help', 'Print usage info') do
@@ -71,6 +69,11 @@ def main
   end
 
   option.parse!
+
+  if configuration_flags.key?('lines_before') || configuration_flags.key?('lines_after')
+    puts 'Error: Incompatible options'
+    exit
+  end
 
   filenames =
     if ARGV == []
