@@ -70,7 +70,8 @@ def main
 
   option.parse!
 
-  if configuration_flags.key?('lines_before') || configuration_flags.key?('lines_after')
+  if configuration_flags['is_stat'] &&
+      (configuration_flags.key?('lines_before') || configuration_flags.key?('lines_after'))
     puts 'Error: Incompatible options'
     exit
   end
