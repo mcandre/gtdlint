@@ -92,18 +92,12 @@ class GTDThing
   end
 
   def to_finding
-    {
-        :failure => true,
-        :rule => "Pattern found",
-        :description => "Observed line: #{line}",
-        :categories => [
-            "Bug Risk"
-        ],
-        :location => {
-            :path => "#{filename}",
-            :beginLine => "#{line_number}",
-        },
-    }
+    finding = StatModule::Finding.new(true, 'Pattern found', "Observed line: #{line}")
+    finding.categories = ['Bug Risk']
+    location = StatModule::Location.new("#{@filename}")
+    location.begin_line = line_number.to_i
+    finding.location = location
+    finding
   end
 
 end
@@ -135,13 +129,10 @@ def self.check_stdin(configuration = nil)
 -n \
 -i \
 -w #{gtd_pattern} \
-\"#{filename}\"
+  \"#{filename}\"
 `
-
   lines = output.split("\n")
-
   gtd_things = lines.map { |line| GTDThing.parse('stdin', line) }
-
   if is_stat
     gtd_things.each { |finding|
       yield finding.to_finding
