@@ -5,7 +5,7 @@ require 'find'
 require 'optparse'
 require 'dotsmack'
 require 'yaml'
-require_relative '../lib/gtdlint'
+require 'gtdlint'
 require 'json'
 require 'stat'
 
