@@ -29,8 +29,9 @@ $ gtdlint -h
 Usage: gtdlint [options] [<files>|-]
     -i, --ignore pattern             Ignore file pattern (fnmatch)
     -p, --gtd-pattern pattern        Custom GTD pattern
-    -B, --lines-before n             Also show n lines before matching line
-    -A, --lines-after n              Also show n lines after matching line
+    -B, --lines-before=n             Also show n lines before matching line, incompatible with STAT output
+    -A, --lines-after=n              Also show n lines after matching line, incompatible with STAT output
+    -s, --stat                       Output in STAT
     -h, --help                       Print usage info
     -v, --version                    Print version info
 ```
