@@ -94,7 +94,7 @@ class GTDThing
   def to_finding
     finding = StatModule::Finding.new(true, 'Pattern found', "Observed line: #{line}")
     finding.categories = ['Bug Risk']
-    location = StatModule::Location.new("#{@filename}")
+    location = StatModule::Location.new(@filename.to_s)
     location.begin_line = line_number.to_i
     finding.location = location
     finding

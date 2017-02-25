@@ -95,7 +95,6 @@ def main
       end
     end
   end
-  puts findings
   if configuration_flags['is_stat'] && findings.length > 0
     process = StatModule::Process.new('gtdlint')
     process.version = "#{GTDLint::VERSION}"
