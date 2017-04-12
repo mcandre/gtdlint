@@ -7,27 +7,7 @@ require 'dotsmack'
 require 'yaml'
 require 'gtdlint'
 require 'json'
-
-STAT_HEADER = <<-eos
-{
-  "statVersion": "0.4.0",
-  "process": {
-    "name": "Search for TO-DO items to complete in large projects",
-    "version": "#{GTDLint::VERSION}",
-    "description": "Searches your projects for code comments indicating TODOs, FIXMEs, and other changes that need to be made",
-    "maintainer": "Andrew Pennebaker",
-    "email": "andrew.pennebaker@gmail.com",
-    "website": "https://github.com/mcandre/gtdlint",
-    "repeatability": "Associative"
-  },
-  "findings": [
-eos
-
-STAT_FOOTER = <<-eos
-
-  ]
-}
-eos
+require 'stat'
 
 def main
   ignores = DEFAULT_IGNORES
@@ -83,12 +63,12 @@ def main
       ARGV
     end
 
+  findings = []
   dotsmack = Dotsmack::Smacker.new(
     dotignore = '.gtdlintignore',
     additional_ignores = ignores,
     dotconfig = '.gtdlintrc.yml'
   )
-  finding_count = 0
   dotsmack.enumerate(filenames).each do |filename, config|
     config =
       if config.nil?
@@ -97,29 +77,36 @@ def main
         YAML.load(config).merge(DEFAULT_CONFIGURATION).merge(configuration_flags)
       end
 
-    if filename == '-'
-      check_stdin(config) {|finding|
-        finding_count = output(finding, finding_count, configuration_flags["is_stat"])
-      }
+    if configuration_flags['is_stat']
+      if filename == '-'
+        check_stdin(config) { |finding|
+          findings.push(finding)
+        }
+      else
+        check(filename, config) { |finding|
+          findings.push(finding)
+        }
+      end
     else
-      check(filename, config) {|finding|
-        finding_count = output(finding, finding_count, configuration_flags["is_stat"])
-      }
+      if filename == '-'
+        check_stdin(config)
+      else
+        check(filename, config)
+      end
     end
   end
-
-  if configuration_flags["is_stat"] && finding_count > 0
-    puts STAT_FOOTER
+  if configuration_flags['is_stat'] && findings.length > 0
+    process = StatModule::Process.new('gtdlint')
+    process.version = "#{GTDLint::VERSION}"
+    process.description = 'Searches your projects for code comments indicating TODOs, FIXMEs, and other changes that need to be made.'
+    process.maintainer = 'Andrew Pennebaker'
+    process.email = 'andrew.pennebaker@gmail.com'
+    process.website = 'https://github.com/mcandre/gtdlint'
+    process.repeatability = 'Associative'
+    stat = StatModule::Stat.new(process)
+    stat.findings = findings
+    puts stat.to_json
   end
-end
-
-def output(finding, finding_count, is_stat)
-  if is_stat
-    puts STAT_HEADER if finding_count == 0
-    puts ',' if finding_count > 0
-    print JSON.pretty_generate(finding).lines.map { |line| '    ' + line }.join
-  end
-  return finding_count + 1
 end
 
 begin
