@@ -1,1 +1,2 @@
-gtd_pattern: "\'pte\\|pendiente\\|pending\\|hack\'"
+---
+gtd_pattern: "'pte\\|pendiente\\|pending\\|hack'"

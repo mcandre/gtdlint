@@ -3,10 +3,10 @@
 #include <stdio.h>
 
 int main() {
-  // TODO: Add proper line ending
-  printf("Hello World!");
+    // TODO: Add proper line ending
+    printf("Hello World!");
 
-  putc(10, stdout); // hack
+    putc(10, stdout); // hack
 
-  return 1; // FIXME: Change this to return success
+    return 1; // FIXME: Change this to return success
 }

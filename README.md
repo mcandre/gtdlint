@@ -4,7 +4,7 @@
 
 # EXAMPLES
 
-```
+```console
 $ gtdlint examples/
 examples/.gitignore:1:# TODO: gitignore bin/
 examples/hello.c:1:// TODO: Add copyright
@@ -38,7 +38,7 @@ Usage: gtdlint [options] [<files>|-]
 
 gtdlint can be combined with other programs. For example, check your most recent git commit for leftover TODOs:
 
-```
+```console
 $ git diff HEAD~1 | gtdlint
 ```
 
@@ -72,13 +72,20 @@ gtdlint is a shell wrapper around the traditional GNU [grep](http://www.gnu.org/
 * [Ruby](https://www.ruby-lang.org/) 2.3+
 * [grep](http://www.gnu.org/software/grep/) (often built-in, or provided by [git](http://git-scm.com/))
 
+## Optional
+
+* [GNU findutils](https://www.gnu.org/software/findutils/)
+* [stank](https://github.com/mcandre/stank) (e.g. `go get github.com/mcandre/stank/...`)
+* [Python](https://www.python.org) 3+ (for yamllint)
+* [Node.js](https://nodejs.org/en/) (for eclint)
+
 E.g., Windows users can `chocolatey install git`.
 
 # INSTALL
 
 Install via [RubyGems](http://rubygems.org/):
 
-```
+```console
 $ gem install gtdlint
 ```
 
@@ -96,7 +103,7 @@ FreeBSD
 
 Keep the interface working:
 
-```
+```console
 $ cucumber
 ```
 
@@ -104,7 +111,7 @@ $ cucumber
 
 Keep the code tidy:
 
-```
+```console
 $ rake lint
 ```
 

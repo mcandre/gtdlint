@@ -10,115 +10,115 @@ require 'json'
 require 'stat'
 
 def main
-  ignores = DEFAULT_IGNORES
+    ignores = DEFAULT_IGNORES
 
-  configuration_flags = {}
+    configuration_flags = {}
 
-  option = OptionParser.new do |option|
-    option.banner = "Usage: gtdlint [options] [<files>|-]"
+    option = OptionParser.new do |option|
+        option.banner = "Usage: gtdlint [options] [<files>|-]"
 
-    option.on('-i', '--ignore pattern', 'Ignore file pattern (fnmatch)') do |pattern|
-      ignores << pattern
+        option.on('-i', '--ignore pattern', 'Ignore file pattern (fnmatch)') do |pattern|
+            ignores << pattern
+        end
+
+        option.on('-p', '--gtd-pattern pattern', 'Custom GTD pattern') do |pattern|
+            configuration_flags["gtd_pattern"] = pattern
+        end
+
+        option.on('-B', '--lines-before=n', 'Also show n lines before matching line, incompatible with STAT output') do |n|
+            configuration_flags["lines_before"] = n.to_i
+        end
+
+        option.on('-A', '--lines-after=n', 'Also show n lines after matching line, incompatible with STAT output') do |n|
+            configuration_flags["lines_after"] = n.to_i
+        end
+
+        option.on('-s', '--stat', 'Output in STAT') do
+            configuration_flags["is_stat"] = true
+        end
+
+        option.on('-h', '--help', 'Print usage info') do
+            puts option
+            exit
+        end
+
+        option.on('-v', '--version', 'Print version info') do
+            puts "gtdlint #{GTDLint::VERSION}"
+            exit
+        end
     end
 
-    option.on('-p', '--gtd-pattern pattern', 'Custom GTD pattern') do |pattern|
-      configuration_flags["gtd_pattern"] = pattern
+    option.parse!
+
+    if configuration_flags['is_stat'] &&
+        (configuration_flags.key?('lines_before') || configuration_flags.key?('lines_after'))
+        puts 'Error: Incompatible options'
+        exit
     end
 
-    option.on('-B', '--lines-before=n', 'Also show n lines before matching line, incompatible with STAT output') do |n|
-      configuration_flags["lines_before"] = n.to_i
-    end
-
-    option.on('-A', '--lines-after=n', 'Also show n lines after matching line, incompatible with STAT output') do |n|
-      configuration_flags["lines_after"] = n.to_i
-    end
-
-    option.on('-s', '--stat', 'Output in STAT') do
-      configuration_flags["is_stat"] = true
-    end
-
-    option.on('-h', '--help', 'Print usage info') do
-      puts option
-      exit
-    end
-
-    option.on('-v', '--version', 'Print version info') do
-      puts "gtdlint #{GTDLint::VERSION}"
-      exit
-    end
-  end
-
-  option.parse!
-
-  if configuration_flags['is_stat'] &&
-      (configuration_flags.key?('lines_before') || configuration_flags.key?('lines_after'))
-    puts 'Error: Incompatible options'
-    exit
-  end
-
-  filenames =
+    filenames =
     if ARGV == []
-      ['-']
+        ['-']
     else
-      ARGV
+        ARGV
     end
 
-  findings = []
-  dotsmack = Dotsmack::Smacker.new(
-    dotignore = '.gtdlintignore',
-    additional_ignores = ignores,
-    dotconfig = '.gtdlintrc.yml'
-  )
-  dotsmack.enumerate(filenames).each do |filename, config|
-    config =
-      if config.nil?
-        DEFAULT_CONFIGURATION.merge(configuration_flags)
-      else
-        YAML.load(config).merge(DEFAULT_CONFIGURATION).merge(configuration_flags)
-      end
+    findings = []
+    dotsmack = Dotsmack::Smacker.new(
+        dotignore = '.gtdlintignore',
+        additional_ignores = ignores,
+        dotconfig = '.gtdlintrc.yml'
+    )
+    dotsmack.enumerate(filenames).each do |filename, config|
+        config =
+        if config.nil?
+            DEFAULT_CONFIGURATION.merge(configuration_flags)
+        else
+            YAML.load(config).merge(DEFAULT_CONFIGURATION).merge(configuration_flags)
+        end
 
-    if configuration_flags['is_stat']
-      if filename == '-'
-        check_stdin(config) { |finding|
-          findings.push(finding)
-        }
-      else
-        check(filename, config) { |finding|
-          findings.push(finding)
-        }
-      end
-    else
-      if filename == '-'
-        check_stdin(config)
-      else
-        check(filename, config)
-      end
+        if configuration_flags['is_stat']
+            if filename == '-'
+                check_stdin(config) { |finding|
+                    findings.push(finding)
+                }
+            else
+                check(filename, config) { |finding|
+                    findings.push(finding)
+                }
+            end
+        else
+            if filename == '-'
+                check_stdin(config)
+            else
+                check(filename, config)
+            end
+        end
     end
-  end
-  if configuration_flags['is_stat'] && findings.length > 0
-    process = StatModule::Process.new('gtdlint')
-    process.version = "#{GTDLint::VERSION}"
-    process.description = 'Searches your projects for code comments indicating TODOs, FIXMEs, and other changes that need to be made.'
-    process.maintainer = 'Andrew Pennebaker'
-    process.email = 'andrew.pennebaker@gmail.com'
-    process.website = 'https://github.com/mcandre/gtdlint'
-    process.repeatability = 'Associative'
-    stat = StatModule::Stat.new(process)
-    stat.findings = findings
-    puts stat.to_json
-  end
+    if configuration_flags['is_stat'] && findings.length > 0
+        process = StatModule::Process.new('gtdlint')
+        process.version = "#{GTDLint::VERSION}"
+        process.description = 'Searches your projects for code comments indicating TODOs, FIXMEs, and other changes that need to be made.'
+        process.maintainer = 'Andrew Pennebaker'
+        process.email = 'andrew.pennebaker@gmail.com'
+        process.website = 'https://github.com/mcandre/gtdlint'
+        process.repeatability = 'Associative'
+        stat = StatModule::Stat.new(process)
+        stat.findings = findings
+        puts stat.to_json
+    end
 end
 
 begin
-  main
-# User may quit before completion.
+    main
+    # User may quit before completion.
 rescue Interrupt
-  nil
-# Bad regex
+    nil
+    # Bad regex
 rescue RegexpError => e
-  puts e
-# This program may be piped to another program (e.g. `less`),
-# which is quit before this program completes.
+    puts e
+    # This program may be piped to another program (e.g. `less`),
+    # which is quit before this program completes.
 rescue Errno::EPIPE, Errno::EMFILE
-  nil
+    nil
 end

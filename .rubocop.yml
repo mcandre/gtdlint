@@ -1,5 +1,6 @@
+---
 MethodLength:
-  Max: 60
+    Max: 60
 Style/FileName:
-  Exclude:
-    - 'Guardfile*'
+    Exclude:
+        - 'Guardfile*'

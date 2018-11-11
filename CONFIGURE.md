@@ -12,7 +12,7 @@ Any command-line flags that are present override the same settings in dotfiles a
 
 Run `gtdlint -h` or `gtdlint --help` for a full list, or refer to the source code for `bin/gtdlint`.
 
-```
+```console
 $ bin/gtdlint -h
 Usage: gtdlint [options] [<files>|-]
     -i, --ignore pattern             Ignore file pattern (fnmatch)
@@ -47,6 +47,6 @@ Samples:
 
 # Built-in defaults
 
-* `gtd_pattern`: `"\'todo\\|to do\\|to-do\\|pending\\|hack\\|fixme\'"`.
+* `gtd_pattern`: `"todo\\|to do\\|to-do\\|pending\\|hack\\|fixme"`.
 * `before_lines`: `0`
 * `after_lines`: `0`
