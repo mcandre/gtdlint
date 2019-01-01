@@ -90,16 +90,6 @@ class GTDThing
     def to_s
         "#{filename}:#{line_number}:#{line}"
     end
-
-    def to_finding
-        finding = StatModule::Finding.new(true, 'Pattern found', "Observed line: #{line}")
-        finding.categories = ['Bug Risk']
-        location = StatModule::Location.new(@filename.to_s)
-        location.begin_line = line_number.to_i
-        finding.location = location
-        finding
-    end
-
 end
 
 def self.check_stdin(configuration = nil)
@@ -133,13 +123,7 @@ def self.check_stdin(configuration = nil)
     `
     lines = output.split("\n")
     gtd_things = lines.map { |line| GTDThing.parse('stdin', line) }
-    if is_stat
-        gtd_things.each { |finding|
-            yield finding.to_finding
-        }
-    else
-        gtd_things.each { |m| puts m }
-    end
+    gtd_things.each { |m| puts m }
 end
 
 def self.check(filename, configuration = nil)
@@ -168,11 +152,5 @@ def self.check(filename, configuration = nil)
 
     gtd_things = lines.map { |line| GTDThing.parse(filename, line) }
 
-    if is_stat
-        gtd_things.each { |finding|
-            yield finding.to_finding
-        }
-    else
-        gtd_things.each { |m| puts m }
-    end
+    gtd_things.each { |m| puts m }
 end

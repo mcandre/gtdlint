@@ -7,7 +7,6 @@ require 'dotsmack'
 require 'yaml'
 require 'gtdlint'
 require 'json'
-require 'stat'
 
 def main
     ignores = DEFAULT_IGNORES
@@ -50,12 +49,6 @@ def main
 
     option.parse!
 
-    if configuration_flags['is_stat'] &&
-        (configuration_flags.key?('lines_before') || configuration_flags.key?('lines_after'))
-        puts 'Error: Incompatible options'
-        exit
-    end
-
     filenames =
     if ARGV == []
         ['-']
@@ -77,35 +70,11 @@ def main
             YAML.load(config).merge(DEFAULT_CONFIGURATION).merge(configuration_flags)
         end
 
-        if configuration_flags['is_stat']
-            if filename == '-'
-                check_stdin(config) { |finding|
-                    findings.push(finding)
-                }
-            else
-                check(filename, config) { |finding|
-                    findings.push(finding)
-                }
-            end
+        if filename == '-'
+            check_stdin(config)
         else
-            if filename == '-'
-                check_stdin(config)
-            else
-                check(filename, config)
-            end
+            check(filename, config)
         end
-    end
-    if configuration_flags['is_stat'] && findings.length > 0
-        process = StatModule::Process.new('gtdlint')
-        process.version = "#{GTDLint::VERSION}"
-        process.description = 'Searches your projects for code comments indicating TODOs, FIXMEs, and other changes that need to be made.'
-        process.maintainer = 'Andrew Pennebaker'
-        process.email = 'andrew.pennebaker@gmail.com'
-        process.website = 'https://github.com/mcandre/gtdlint'
-        process.repeatability = 'Associative'
-        stat = StatModule::Stat.new(process)
-        stat.findings = findings
-        puts stat.to_json
     end
 end
 

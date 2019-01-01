@@ -30,26 +30,4 @@ Then(/^the output is correct for each test$/) do
     cucumber_before_after_lines = @cucumber_before_after.split("\n")
     expect(cucumber_before_after_lines.length).to be >= 11
     expect(cucumber_before_after_lines[2]).to match(%r(^examples/hello.c\:[0-9]+(\:|-).*$))
-
-    lines_stat = @cucumber_stat
-    expect(valid_json?(lines_stat)).to eq(true)
-
-    json = JSON.parse(lines_stat)
-    expect(json['findings'].length).to eq(7)
-    expect(json['findings'][0]['location']['path']).to match(
-        'examples/.gitignore'
-    )
-
-    lines_stat_before_after = @cucumber_stat_before_after
-    expect(lines_stat_before_after).to match(%r(^Error:*))
-end
-
-
-def valid_json?(json)
-    begin
-        JSON.parse(json)
-        return true
-    rescue JSON::ParserError => e
-        return false
-    end
 end
